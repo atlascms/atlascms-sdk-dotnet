@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="src/AtlasCms.Sdk/AtlasCms.Sdk.csproj" />
+  <Project Path="tests/AtlasCms.Sdk.Tests/AtlasCms.Sdk.Tests.csproj" />
+</Solution>
