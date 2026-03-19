@@ -31,15 +31,13 @@ public sealed class MockHttpHandler : HttpMessageHandler
     }
 
     public static AtlasCmsClient BuildClient(MockHttpHandler handler,
-        string project = "my-project",
-        string restBase = "https://api.example.com",
-        string gqlBase = "https://graphql.example.com/graphql",
+        string projectId = "my-project",
+        string baseUrl = "https://api.example.com",
         string apiKey = "test-key")
         => AtlasCmsClient.Create(new AtlasClientConfig
         {
-            Project = project,
-            RestBaseUrl = restBase,
-            GraphqlBaseUrl = gqlBase,
+            ProjectId = projectId,
+            BaseUrl = baseUrl,
             ApiKey = apiKey,
             HttpClient = new HttpClient(handler)
         });

@@ -5,42 +5,30 @@ namespace AtlasCms.Sdk.AspnetCore;
 /// </summary>
 public class AtlasClientConfigBuilder
 {
-    private string? _project;
-    private string? _restBaseUrl;
-    private string? _graphqlBaseUrl;
+    private string? _projectId;
+    private string? _baseUrl;
     private string? _apiKey;
     private HttpClient? _httpClient;
 
     /// <summary>
-    /// Sets the Atlas CMS project name.
+    /// Sets the Atlas CMS project ID.
     /// </summary>
-    public AtlasClientConfigBuilder WithProject(string project)
+    public AtlasClientConfigBuilder WithProjectId(string projectId)
     {
-        if (string.IsNullOrWhiteSpace(project))
-            throw new ArgumentException("Project cannot be null or empty.", nameof(project));
-        _project = project;
+        if (string.IsNullOrWhiteSpace(projectId))
+            throw new ArgumentException("ProjectId cannot be null or empty.", nameof(projectId));
+        _projectId = projectId;
         return this;
     }
 
     /// <summary>
-    /// Sets the REST API base URL.
+    /// Sets the API base URL. Defaults to "https://api.atlascms.io".
     /// </summary>
-    public AtlasClientConfigBuilder WithRestBaseUrl(string restBaseUrl)
+    public AtlasClientConfigBuilder WithBaseUrl(string baseUrl)
     {
-        if (string.IsNullOrWhiteSpace(restBaseUrl))
-            throw new ArgumentException("RestBaseUrl cannot be null or empty.", nameof(restBaseUrl));
-        _restBaseUrl = restBaseUrl;
-        return this;
-    }
-
-    /// <summary>
-    /// Sets the GraphQL API base URL.
-    /// </summary>
-    public AtlasClientConfigBuilder WithGraphqlBaseUrl(string graphqlBaseUrl)
-    {
-        if (string.IsNullOrWhiteSpace(graphqlBaseUrl))
-            throw new ArgumentException("GraphqlBaseUrl cannot be null or empty.", nameof(graphqlBaseUrl));
-        _graphqlBaseUrl = graphqlBaseUrl;
+        if (string.IsNullOrWhiteSpace(baseUrl))
+            throw new ArgumentException("BaseUrl cannot be null or empty.", nameof(baseUrl));
+        _baseUrl = baseUrl;
         return this;
     }
 
@@ -69,25 +57,19 @@ public class AtlasClientConfigBuilder
     /// <summary>
     /// Builds the Atlas CMS client configuration.
     /// </summary>
-    /// <returns>The configured AtlasClientConfig.</returns>
     /// <exception cref="InvalidOperationException">Thrown when required configuration is missing.</exception>
     public AtlasClientConfig Build()
     {
-        if (string.IsNullOrEmpty(_project))
-            throw new InvalidOperationException("Project is required. Use WithProject() to set it.");
-        if (string.IsNullOrEmpty(_restBaseUrl))
-            throw new InvalidOperationException("RestBaseUrl is required. Use WithRestBaseUrl() to set it.");
-        if (string.IsNullOrEmpty(_graphqlBaseUrl))
-            throw new InvalidOperationException("GraphqlBaseUrl is required. Use WithGraphqlBaseUrl() to set it.");
+        if (string.IsNullOrEmpty(_projectId))
+            throw new InvalidOperationException("ProjectId is required. Use WithProjectId() to set it.");
         if (string.IsNullOrEmpty(_apiKey))
             throw new InvalidOperationException("ApiKey is required. Use WithApiKey() to set it.");
 
         return new AtlasClientConfig
         {
-            Project = _project,
-            RestBaseUrl = _restBaseUrl,
-            GraphqlBaseUrl = _graphqlBaseUrl,
+            ProjectId = _projectId,
             ApiKey = _apiKey,
+            BaseUrl = _baseUrl,
             HttpClient = _httpClient
         };
     }

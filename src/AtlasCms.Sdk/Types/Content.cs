@@ -14,5 +14,6 @@ public record Content
     public required string Hash { get; set; }
     public required ContentStatus Status { get; set; }
     public JsonObject? Attributes { get; set; }
+    public ContentSeo? Seo { get; set; }
     public IReadOnlyList<LocaleStatus>? Locales { get; set; }
 }

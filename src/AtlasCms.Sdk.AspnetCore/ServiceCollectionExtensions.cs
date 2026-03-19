@@ -23,25 +23,22 @@ public static class ServiceCollectionExtensions
     {
         var section = configuration.GetSection(sectionName);
 
-        var project = section["Project"];
-        var restBaseUrl = section["RestBaseUrl"];
-        var graphqlBaseUrl = section["GraphqlBaseUrl"];
+        var projectId = section["ProjectId"];
         var apiKey = section["ApiKey"];
+        var baseUrl = section["BaseUrl"];
 
-        if (string.IsNullOrEmpty(project) || string.IsNullOrEmpty(restBaseUrl) ||
-            string.IsNullOrEmpty(graphqlBaseUrl) || string.IsNullOrEmpty(apiKey))
+        if (string.IsNullOrEmpty(projectId) || string.IsNullOrEmpty(apiKey))
         {
             throw new InvalidOperationException(
                 $"Atlas CMS configuration section '{sectionName}' is missing or incomplete. " +
-                "Please ensure Project, RestBaseUrl, GraphqlBaseUrl, and ApiKey are configured.");
+                "Please ensure ProjectId and ApiKey are configured.");
         }
 
         return AddAtlasCms(services, new AtlasClientConfig
         {
-            Project = project,
-            RestBaseUrl = restBaseUrl,
-            GraphqlBaseUrl = graphqlBaseUrl,
-            ApiKey = apiKey
+            ProjectId = projectId,
+            ApiKey = apiKey,
+            BaseUrl = string.IsNullOrEmpty(baseUrl) ? null : baseUrl
         });
     }
 

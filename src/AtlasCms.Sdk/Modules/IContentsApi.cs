@@ -17,6 +17,11 @@ public record CreateContentInput
     /// Dynamic attributes for the content. Supports any JSON-serializable properties.
     /// </summary>
     public JsonObject? Attributes { get; init; }
+
+    /// <summary>
+    /// SEO metadata for the content.
+    /// </summary>
+    public ContentSeo? Seo { get; init; }
 }
 
 /// <summary>
@@ -33,6 +38,22 @@ public record UpdateContentInput
     /// Dynamic attributes to update. Only specified properties will be updated.
     /// </summary>
     public JsonObject? Attributes { get; init; }
+
+    /// <summary>
+    /// SEO metadata to update.
+    /// </summary>
+    public ContentSeo? Seo { get; init; }
+}
+
+/// <summary>
+/// Input model for updating only SEO metadata.
+/// </summary>
+public record UpdateContentSeoInput
+{
+    /// <summary>
+    /// SEO metadata to update.
+    /// </summary>
+    public required ContentSeo Seo { get; init; }
 }
 
 /// <summary>
@@ -150,4 +171,15 @@ public interface IContentsApi
     /// <returns>The result containing the ID of the duplicated content.</returns>
     Task<CreateResult> DuplicateAsync(
         string type, string id, bool locales = false, AtlasRequestOptions? options = null, CancellationToken ct = default);
+
+    /// <summary>
+    /// Updates only the SEO metadata of a content item.
+    /// </summary>
+    /// <param name="type">The content type name.</param>
+    /// <param name="id">The unique identifier of the content.</param>
+    /// <param name="payload">The SEO metadata update.</param>
+    /// <param name="options">Optional request options including custom API key.</param>
+    /// <param name="ct">Cancellation token for the operation.</param>
+    Task UpdateSeoAsync(
+        string type, string id, UpdateContentSeoInput payload, AtlasRequestOptions? options = null, CancellationToken ct = default);
 }

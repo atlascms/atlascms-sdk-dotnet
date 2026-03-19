@@ -6,34 +6,32 @@ namespace AtlasCms.Sdk.Modules;
 /// <summary>
 /// Implementation of IContentsApi providing content management operations.
 /// </summary>
-internal sealed class ContentsApi(AtlasHttpClient http, string restBaseUrl, string project) : IContentsApi
+internal sealed class ContentsApi(AtlasHttpClient http, string restBaseUrl) : IContentsApi
 {
-    private readonly string _project = Uri.EscapeDataString(project);
-
     /// <inheritdoc />
     public Task<PagedResult<Content>> ListAsync(
         string type, string? query = null, AtlasRequestOptions? options = null, CancellationToken ct = default)
         => http.RequestAsync<PagedResult<Content>>(
-            Get(Url($"/{_project}/contents/{Enc(type)}", query), options), ct);
+            Get(Url($"/contents/{Enc(type)}", query), options), ct);
 
     /// <inheritdoc />
     public Task<Content> GetByIdAsync(
         string type, string id, AtlasRequestOptions? options = null, CancellationToken ct = default)
         => http.RequestAsync<Content>(
-            Get(Url($"/{_project}/contents/{Enc(type)}/{Enc(id)}"), options), ct);
+            Get(Url($"/contents/{Enc(type)}/{Enc(id)}"), options), ct);
 
     /// <inheritdoc />
     public Task<Content> GetSingleAsync(
         string type, string? query = null, AtlasRequestOptions? options = null, CancellationToken ct = default)
         => http.RequestAsync<Content>(
-            Get(Url($"/{_project}/contents/{Enc(type)}/single", query), options), ct);
+            Get(Url($"/contents/{Enc(type)}/single", query), options), ct);
 
     /// <inheritdoc />
     public async Task<int> CountAsync(
         string type, string? query = null, AtlasRequestOptions? options = null, CancellationToken ct = default)
     {
         var result = await http.RequestAsync<ApiKeyResult>(
-            Get(Url($"/{_project}/contents/{Enc(type)}/count", query), options), ct);
+            Get(Url($"/contents/{Enc(type)}/count", query), options), ct);
         return result?.IntValue ?? 0;
     }
 
@@ -42,7 +40,7 @@ internal sealed class ContentsApi(AtlasHttpClient http, string restBaseUrl, stri
         string type, CreateContentInput payload, AtlasRequestOptions? options = null, CancellationToken ct = default)
     {
         var result = await http.RequestAsync<ApiKeyResult>(
-            Post(Url($"/{_project}/contents/{Enc(type)}"), payload, options), ct);
+            Post(Url($"/contents/{Enc(type)}"), payload, options), ct);
         return new CreateResult { Id = result?.StringValue ?? string.Empty };
     }
 
@@ -50,19 +48,19 @@ internal sealed class ContentsApi(AtlasHttpClient http, string restBaseUrl, stri
     public Task UpdateAsync(
         string type, string id, UpdateContentInput payload, AtlasRequestOptions? options = null, CancellationToken ct = default)
         => http.RequestVoidAsync(
-            new HttpRequestConfig { Url = Url($"/{_project}/contents/{Enc(type)}/{Enc(id)}"), Method = HttpMethod.Put, Body = payload, ApiKey = options?.ApiKey }, ct);
+            new HttpRequestConfig { Url = Url($"/contents/{Enc(type)}/{Enc(id)}"), Method = HttpMethod.Put, Body = payload, ApiKey = options?.ApiKey }, ct);
 
     /// <inheritdoc />
     public Task RemoveAsync(
         string type, string id, AtlasRequestOptions? options = null, CancellationToken ct = default)
         => http.RequestVoidAsync(
-            new HttpRequestConfig { Url = Url($"/{_project}/contents/{Enc(type)}/{Enc(id)}"), Method = HttpMethod.Delete, ApiKey = options?.ApiKey }, ct);
+            new HttpRequestConfig { Url = Url($"/contents/{Enc(type)}/{Enc(id)}"), Method = HttpMethod.Delete, ApiKey = options?.ApiKey }, ct);
 
     /// <inheritdoc />
     public Task ChangeStatusAsync(
         string type, string id, ContentStatus status, AtlasRequestOptions? options = null, CancellationToken ct = default)
         => http.RequestVoidAsync(
-            Post(Url($"/{_project}/contents/{Enc(type)}/{Enc(id)}/status"),
+            Post(Url($"/contents/{Enc(type)}/{Enc(id)}/status"),
                 new { status = status.ToString().ToLowerInvariant() }, options), ct);
 
     /// <inheritdoc />
@@ -70,7 +68,7 @@ internal sealed class ContentsApi(AtlasHttpClient http, string restBaseUrl, stri
         string type, string id, string? locale = null, AtlasRequestOptions? options = null, CancellationToken ct = default)
     {
         var result = await http.RequestAsync<ApiKeyResult>(
-            Post(Url($"/{_project}/contents/{Enc(type)}/{Enc(id)}/create-translation"), new { locale }, options), ct);
+            Post(Url($"/contents/{Enc(type)}/{Enc(id)}/create-translation"), new { locale }, options), ct);
         return new CreateResult { Id = result?.StringValue ?? string.Empty };
     }
 
@@ -79,33 +77,27 @@ internal sealed class ContentsApi(AtlasHttpClient http, string restBaseUrl, stri
         string type, string id, bool locales = false, AtlasRequestOptions? options = null, CancellationToken ct = default)
     {
         var result = await http.RequestAsync<ApiKeyResult>(
-            Post(Url($"/{_project}/contents/{Enc(type)}/{Enc(id)}/duplicate"), new { locales }, options), ct);
+            Post(Url($"/contents/{Enc(type)}/{Enc(id)}/duplicate"), new { locales }, options), ct);
         return new CreateResult { Id = result?.StringValue ?? string.Empty };
     }
 
-    /// <summary>
-    /// Constructs a full URL with optional query string.
-    /// </summary>
+    /// <inheritdoc />
+    public Task UpdateSeoAsync(
+        string type, string id, UpdateContentSeoInput payload, AtlasRequestOptions? options = null, CancellationToken ct = default)
+        => http.RequestVoidAsync(
+            new HttpRequestConfig { Url = Url($"/contents/{Enc(type)}/{Enc(id)}/seo"), Method = HttpMethod.Post, Body = payload, ApiKey = options?.ApiKey }, ct);
+
     private string Url(string path, string? query = null)
     {
         var full = restBaseUrl.TrimEnd('/') + path;
         return string.IsNullOrEmpty(query) ? full : $"{full}?{query}";
     }
 
-    /// <summary>
-    /// URL-encodes a string value.
-    /// </summary>
     private static string Enc(string v) => Uri.EscapeDataString(v);
 
-    /// <summary>
-    /// Creates a GET HTTP request configuration.
-    /// </summary>
     private static HttpRequestConfig Get(string url, AtlasRequestOptions? o = null) =>
         new() { Url = url, Method = HttpMethod.Get, ApiKey = o?.ApiKey };
 
-    /// <summary>
-    /// Creates a POST HTTP request configuration.
-    /// </summary>
     private static HttpRequestConfig Post(string url, object? body, AtlasRequestOptions? o = null) =>
         new() { Url = url, Method = HttpMethod.Post, Body = body, ApiKey = o?.ApiKey };
 }
