@@ -14,7 +14,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>Headless;CMS;Atlas CMS</PackageTags>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <PackageId>AtlasCMS</PackageId>
+    <PackageId>AtlasCms.Sdk</PackageId>
     <RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
     <Company>Atlas CMS</Company>
     <Product>Atlas CMS .NET Client SDK</Product>
