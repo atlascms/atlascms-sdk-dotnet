@@ -12,7 +12,7 @@ on:
         - main
 
 env:
-  PROJECT_PATH: "src/AtlasCms.Sdk.©/AtlasCms.Sdk.AspnetCore.csproj"
+  PROJECT_PATH: "src/AtlasCms.Sdk.AspnetCore/AtlasCms.Sdk.AspnetCore.csproj"
   PACKAGE_OUTPUT_PATH: ${{ github.workspace }}/output
   NUGET_SOURCE_URL: "https://api.nuget.org/v3/index.json"
 
