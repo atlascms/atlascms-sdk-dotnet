@@ -6,7 +6,32 @@
     <LangVersion>latest</LangVersion>
     <RootNamespace>AtlasCms.Sdk.AspnetCore</RootNamespace>
     <AssemblyName>AtlasCms.Sdk.AspnetCore</AssemblyName>
+    <Copyright>Atlas CMS</Copyright>
+    <PackageProjectUrl>https://atlascms.io</PackageProjectUrl>
+    <PackageIcon>atlas-logo.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/atlascms/atlascms-sdk-dotnet</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>Headless;CMS;Atlas CMS</PackageTags>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageId>AtlasCms.Sdk.AspnetCore</PackageId>
+    <RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
+    <Company>Atlas CMS</Company>
+    <Product>Atlas CMS AspnetCore Extensions</Product>
+    <Version>1.0.0</Version>
+    <Authors>Atlas CMS</Authors>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\assets\atlas-logo.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="../AtlasCms.Sdk/AtlasCms.Sdk.csproj" />
