@@ -11,20 +11,20 @@ internal sealed class ComponentsApi(AtlasHttpClient http, string restBaseUrl) : 
     /// <inheritdoc />
     public Task<IReadOnlyList<Component>> ListAsync(
         AtlasRequestOptions? options = null, CancellationToken ct = default)
-        => http.RequestAsync<IReadOnlyList<Component>>(
+        => Http.RequestAsync<IReadOnlyList<Component>>(
             Get(Url("/content-types/components"), options), ct);
 
     /// <inheritdoc />
     public Task<Component> GetByIdAsync(
         string id, AtlasRequestOptions? options = null, CancellationToken ct = default)
-        => http.RequestAsync<Component>(
+        => Http.RequestAsync<Component>(
             Get(Url($"/content-types/components/{Enc(id)}"), options), ct);
 
     /// <inheritdoc />
     public Task<KeyResult<string>> CreateAsync(
         CreateComponentInput payload, AtlasRequestOptions? options = null, CancellationToken ct = default)
     {
-        return http.RequestAsync<KeyResult<string>>(
+        return Http.RequestAsync<KeyResult<string>>(
             Post(Url("/content-types/components"), payload, options), ct);
     }
 
@@ -32,7 +32,7 @@ internal sealed class ComponentsApi(AtlasHttpClient http, string restBaseUrl) : 
     public Task<KeyResult<string>> UpdateAsync(
         UpdateComponentInput payload, AtlasRequestOptions? options = null, CancellationToken ct = default)
     {
-        return http.RequestAsync<KeyResult<string>>(
+        return Http.RequestAsync<KeyResult<string>>(
             new HttpRequestConfig
             {
                 Url = Url($"/content-types/components/{Enc(payload.Id)}"),
@@ -45,7 +45,7 @@ internal sealed class ComponentsApi(AtlasHttpClient http, string restBaseUrl) : 
     /// <inheritdoc />
     public Task RemoveAsync(
         string id, AtlasRequestOptions? options = null, CancellationToken ct = default)
-        => http.RequestVoidAsync(
+        => Http.RequestVoidAsync(
             new HttpRequestConfig { Url = Url($"/content-types/components/{Enc(id)}"), Method = HttpMethod.Delete, ApiKey = options?.ApiKey }, ct);
 
 }

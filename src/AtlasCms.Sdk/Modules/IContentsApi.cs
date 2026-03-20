@@ -63,6 +63,12 @@ public interface IContentsApi
         string type, string? query = null, AtlasRequestOptions? options = null, CancellationToken ct = default);
 
     /// <summary>
+    /// Lists content of a specific type deserializing `attributes` into a typed model.
+    /// </summary>
+    Task<PagedResult<Content<TAttributes>>> ListAsync<TAttributes>(
+        string type, string? query = null, AtlasRequestOptions? options = null, CancellationToken ct = default);
+
+    /// <summary>
     /// Retrieves a specific content item by ID.
     /// </summary>
     /// <param name="type">The content type name.</param>
@@ -74,6 +80,12 @@ public interface IContentsApi
         string type, string id, string? resolve = null, AtlasRequestOptions? options = null, CancellationToken ct = default);
 
     /// <summary>
+    /// Retrieves a specific content item by ID deserializing `attributes` into a typed model.
+    /// </summary>
+    Task<Content<TAttributes>> GetByIdAsync<TAttributes>(
+        string type, string id, string? resolve = null, AtlasRequestOptions? options = null, CancellationToken ct = default);
+
+    /// <summary>
     /// Retrieves a singleton content item (unique content of a specific type).
     /// </summary>
     /// <param name="type">The content type name.</param>
@@ -82,6 +94,12 @@ public interface IContentsApi
     /// <param name="ct">Cancellation token for the operation.</param>
     /// <returns>The singleton content item.</returns>
     Task<Content> GetSingleAsync(
+        string type, string? query = null, AtlasRequestOptions? options = null, CancellationToken ct = default);
+
+    /// <summary>
+    /// Retrieves a singleton content item deserializing `attributes` into a typed model.
+    /// </summary>
+    Task<Content<TAttributes>> GetSingleAsync<TAttributes>(
         string type, string? query = null, AtlasRequestOptions? options = null, CancellationToken ct = default);
 
     /// <summary>

@@ -12,25 +12,25 @@ internal sealed class MediaApi(AtlasHttpClient http, string restBaseUrl) : Atlas
     /// <inheritdoc />
     public Task<PagedResult<Media>> ListAsync(
         string? query = null, AtlasRequestOptions? options = null, CancellationToken ct = default)
-        => http.RequestAsync<PagedResult<Media>>(
+        => Http.RequestAsync<PagedResult<Media>>(
             Get(Url("/media-library/media", query), options), ct);
 
     /// <inheritdoc />
     public Task<Media> GetByIdAsync(
         string id, AtlasRequestOptions? options = null, CancellationToken ct = default)
-        => http.RequestAsync<Media>(
+        => Http.RequestAsync<Media>(
             Get(Url($"/media-library/media/{Enc(id)}"), options), ct);
 
     /// <inheritdoc />
     public Task RemoveAsync(
         string id, AtlasRequestOptions? options = null, CancellationToken ct = default)
-        => http.RequestVoidAsync(
+        => Http.RequestVoidAsync(
             new HttpRequestConfig { Url = Url($"/media-library/media/{Enc(id)}"), Method = HttpMethod.Delete, ApiKey = options?.ApiKey }, ct);
 
     /// <inheritdoc />
     public Task SetTagsAsync(
         string id, IEnumerable<string> tags, AtlasRequestOptions? options = null, CancellationToken ct = default)
-        => http.RequestVoidAsync(
+        => Http.RequestVoidAsync(
             new HttpRequestConfig
             {
                 Url = Url($"/media-library/media/{Enc(id)}/tags"),
@@ -56,7 +56,7 @@ internal sealed class MediaApi(AtlasHttpClient http, string restBaseUrl) : Atlas
         if (input.FileName is not null) form.Add(new StringContent(input.FileName), "fileName");
         if (input.Id is not null) form.Add(new StringContent(input.Id), "id");
 
-        return http.RequestAsync<Media>(
+        return Http.RequestAsync<Media>(
             new HttpRequestConfig
             {
                 Url = Url("/media-library/media/upload"),
