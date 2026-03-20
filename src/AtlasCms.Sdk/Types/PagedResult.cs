@@ -2,7 +2,8 @@ namespace AtlasCms.Sdk.Types;
 
 public record PagedMetadata
 {
-    public int TotalCount { get; set; }
+    // Matches swagger `metadata.count`.
+    public int Count { get; set; }
     public int TotalPages { get; set; }
     public int CurrentPage { get; set; }
     public int PageSize { get; set; }
@@ -12,10 +13,12 @@ public record PagedMetadata
 
 public record PagedResult<T>
 {
-    public required IReadOnlyList<T> Data { get; set; }
+    // Swagger allows `data` to be null.
+    public IReadOnlyList<T>? Data { get; set; }
     public required PagedMetadata Metadata { get; set; }
 }
 
+[System.Obsolete("Use KeyResult<string> (Swagger `{ result }` wrapper) instead of CreateResult.")]
 public record CreateResult
 {
     public required string Id { get; set; }

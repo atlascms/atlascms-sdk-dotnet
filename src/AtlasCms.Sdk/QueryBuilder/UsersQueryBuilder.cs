@@ -14,4 +14,15 @@ public sealed class UsersQueryBuilder : BaseQueryBuilder<UsersQueryBuilder>
 
     public UsersQueryBuilder Roles(string value, string op = "any")
         => Filter("roles", op, value);
+
+    // Swagger exposes `roleId` as a dedicated query parameter (not via `filter[...]`).
+    public UsersQueryBuilder RoleId(string value)
+        => Extra("roleId", value);
+
+    // Swagger exposes `resolve` as a dedicated query parameter (media, mediagallery, references).
+    public UsersQueryBuilder Resolve(string value)
+        => Extra("resolve", value);
+
+    public UsersQueryBuilder Resolve(params string[] values)
+        => Extra("resolve", string.Join(",", values));
 }

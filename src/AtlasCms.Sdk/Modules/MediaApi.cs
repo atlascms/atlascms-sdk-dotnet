@@ -7,7 +7,7 @@ namespace AtlasCms.Sdk.Modules;
 /// Provides implementation for media library management operations in the Atlas CMS system.
 /// This class handles all HTTP communication for media-related API endpoints.
 /// </summary>
-internal sealed class MediaApi(AtlasHttpClient http, string restBaseUrl) : IMediaApi
+internal sealed class MediaApi(AtlasHttpClient http, string restBaseUrl) : AtlasRestModuleBase(http, restBaseUrl), IMediaApi
 {
     /// <inheritdoc />
     public Task<PagedResult<Media>> ListAsync(
@@ -35,7 +35,8 @@ internal sealed class MediaApi(AtlasHttpClient http, string restBaseUrl) : IMedi
             {
                 Url = Url($"/media-library/media/{Enc(id)}/tags"),
                 Method = HttpMethod.Post,
-                Body = new { tags },
+                // Swagger requires `id` inside SetMediaTagsCommand.
+                Body = new { id, tags },
                 ApiKey = options?.ApiKey
             }, ct);
 
@@ -65,14 +66,4 @@ internal sealed class MediaApi(AtlasHttpClient http, string restBaseUrl) : IMedi
             }, ct);
     }
 
-    private string Url(string path, string? query = null)
-    {
-        var full = restBaseUrl.TrimEnd('/') + path;
-        return string.IsNullOrEmpty(query) ? full : $"{full}?{query}";
-    }
-
-    private static string Enc(string v) => Uri.EscapeDataString(v);
-
-    private static HttpRequestConfig Get(string url, AtlasRequestOptions? o = null) =>
-        new() { Url = url, Method = HttpMethod.Get, ApiKey = o?.ApiKey };
 }

@@ -47,7 +47,7 @@ public interface IRolesApi
     /// <param name="options">Optional request options including custom API key override.</param>
     /// <param name="ct">Cancellation token to cancel the operation.</param>
     /// <returns>A task that represents the asynchronous operation. The task result contains the creation result with the new role ID.</returns>
-    Task<CreateResult> CreateAsync(
+    Task<KeyResult<string>> CreateAsync(
         CreateRoleInput payload, AtlasRequestOptions? options = null, CancellationToken ct = default);
 
     /// <summary>

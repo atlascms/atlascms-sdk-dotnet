@@ -7,7 +7,7 @@ namespace AtlasCms.Sdk.Modules;
 /// </summary>
 public record CreateComponentInput
 {
-    public required string Key { get; init; }
+    public string? Key { get; init; }
     public string? Name { get; init; }
     public string? Description { get; init; }
     public IReadOnlyList<IField>? Attributes { get; init; }
@@ -30,14 +30,13 @@ public record UpdateComponentInput
 public interface IComponentsApi
 {
     /// <summary>
-    /// Lists all components with optional query filtering.
+    /// Lists all components.
     /// </summary>
-    /// <param name="query">Optional query string for filtering and pagination.</param>
     /// <param name="options">Optional request options including custom API key.</param>
     /// <param name="ct">Cancellation token for the operation.</param>
-    /// <returns>A paginated result containing the list of components.</returns>
-    Task<PagedResult<Component>> ListAsync(
-        string? query = null, AtlasRequestOptions? options = null, CancellationToken ct = default);
+    /// <returns>The list of components.</returns>
+    Task<IReadOnlyList<Component>> ListAsync(
+        AtlasRequestOptions? options = null, CancellationToken ct = default);
 
     /// <summary>
     /// Retrieves a specific component by ID.
@@ -56,7 +55,7 @@ public interface IComponentsApi
     /// <param name="options">Optional request options including custom API key.</param>
     /// <param name="ct">Cancellation token for the operation.</param>
     /// <returns>The result containing the ID of the created component.</returns>
-    Task<CreateResult> CreateAsync(
+    Task<KeyResult<string>> CreateAsync(
         CreateComponentInput payload, AtlasRequestOptions? options = null, CancellationToken ct = default);
 
     /// <summary>
@@ -65,7 +64,7 @@ public interface IComponentsApi
     /// <param name="payload">The component update input.</param>
     /// <param name="options">Optional request options including custom API key.</param>
     /// <param name="ct">Cancellation token for the operation.</param>
-    Task UpdateAsync(
+    Task<KeyResult<string>> UpdateAsync(
         UpdateComponentInput payload, AtlasRequestOptions? options = null, CancellationToken ct = default);
 
     /// <summary>

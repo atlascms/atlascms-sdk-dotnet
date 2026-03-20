@@ -24,7 +24,7 @@ public class RolesApiTests
     [Fact]
     public async Task Create_PostsAndReturnsId()
     {
-        var handler = new MockHttpHandler("""{"value":"role-id"}""");
+        var handler = new MockHttpHandler("""{"result":"role-id"}""");
         var client = MockHttpHandler.BuildClient(handler);
 
         var result = await client.Roles.CreateAsync(new CreateRoleInput
@@ -33,7 +33,7 @@ public class RolesApiTests
             Permissions = ["content.read", "content.write"]
         });
 
-        result.Id.Should().Be("role-id");
+        result.Result.Should().Be("role-id");
         handler.LastRequest!.Method.Should().Be(HttpMethod.Post);
         handler.LastRequest.RequestUri!.AbsolutePath.Should().Be("/my-project/users/roles");
         handler.LastRequestBody.Should().Contain("\"name\":\"editor\"");

@@ -11,7 +11,7 @@ namespace AtlasCms.Sdk.Tests;
 public class ContentsApiTests
 {
     private static readonly string PagedJson = """
-        {"data":[],"metadata":{"totalCount":0,"totalPages":0,"currentPage":1,"pageSize":10,"hasPreviousPage":false,"hasNextPage":false}}
+        {"data":[],"metadata":{"count":0,"totalPages":0,"currentPage":1,"pageSize":10,"hasPreviousPage":false,"hasNextPage":false}}
         """;
 
     [Fact]
@@ -65,7 +65,7 @@ public class ContentsApiTests
     [Fact]
     public async Task Count_ReturnsValue()
     {
-        var handler = new MockHttpHandler("""{"value":"42"}""");
+        var handler = new MockHttpHandler("""{"result":42}""");
         var client = MockHttpHandler.BuildClient(handler);
 
         var count = await client.Contents.CountAsync("pages");
@@ -77,13 +77,13 @@ public class ContentsApiTests
     [Fact]
     public async Task Create_PostsAndReturnsId()
     {
-        var handler = new MockHttpHandler("""{"value":"new-id"}""");
+        var handler = new MockHttpHandler("""{"result":"new-id"}""");
         var client = MockHttpHandler.BuildClient(handler);
 
         var result = await client.Contents.CreateAsync("pages",
             new CreateContentInput { Attributes = new JsonObject { ["title"] = "Hello" } });
 
-        result.Id.Should().Be("new-id");
+        result.Result.Should().Be("new-id");
         handler.LastRequest!.Method.Should().Be(HttpMethod.Post);
         handler.LastRequest.RequestUri!.AbsolutePath.Should().Be("/my-project/contents/pages");
     }
@@ -140,12 +140,12 @@ public class ContentsApiTests
     [Fact]
     public async Task CreateTranslation_PostsToCorrectEndpoint()
     {
-        var handler = new MockHttpHandler("""{"value":"translated-id"}""");
+        var handler = new MockHttpHandler("""{"result":"translated-id"}""");
         var client = MockHttpHandler.BuildClient(handler);
 
         var result = await client.Contents.CreateTranslationAsync("pages", "abc", "it-IT");
 
-        result.Id.Should().Be("translated-id");
+        result.Result.Should().Be("translated-id");
         handler.LastRequest!.RequestUri!.AbsolutePath.Should().Be("/my-project/contents/pages/abc/create-translation");
         handler.LastRequestBody.Should().Contain("\"locale\":\"it-IT\"");
     }
@@ -153,12 +153,12 @@ public class ContentsApiTests
     [Fact]
     public async Task Duplicate_PostsToCorrectEndpoint()
     {
-        var handler = new MockHttpHandler("""{"value":"dup-id"}""");
+        var handler = new MockHttpHandler("""{"result":"dup-id"}""");
         var client = MockHttpHandler.BuildClient(handler);
 
         var result = await client.Contents.DuplicateAsync("pages", "abc", locales: true);
 
-        result.Id.Should().Be("dup-id");
+        result.Result.Should().Be("dup-id");
         handler.LastRequest!.RequestUri!.AbsolutePath.Should().Be("/my-project/contents/pages/abc/duplicate");
         handler.LastRequestBody.Should().Contain("\"locales\":true");
     }
@@ -167,7 +167,7 @@ public class ContentsApiTests
     public async Task List_DeserializesJsonObjectAttributes()
     {
         var handler = new MockHttpHandler("""
-            {"data":[{"id":"c1","modelKey":"pages","locale":"en","createdAt":"2024-01-01T00:00:00Z","createdBy":"u1","modifiedAt":"2024-01-01T00:00:00Z","modifiedBy":"u1","hash":"h","status":"published","attributes":{"title":"Hello","count":5}}],"metadata":{"totalCount":1,"totalPages":1,"currentPage":1,"pageSize":10,"hasPreviousPage":false,"hasNextPage":false}}
+            {"data":[{"id":"c1","modelKey":"pages","locale":"en","createdAt":"2024-01-01T00:00:00Z","createdBy":"u1","modifiedAt":"2024-01-01T00:00:00Z","modifiedBy":"u1","hash":"h","status":"published","attributes":{"title":"Hello","count":5}}],"metadata":{"count":1,"totalPages":1,"currentPage":1,"pageSize":10,"hasPreviousPage":false,"hasNextPage":false}}
             """);
         var client = MockHttpHandler.BuildClient(handler);
 

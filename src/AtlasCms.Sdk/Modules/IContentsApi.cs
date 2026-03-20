@@ -17,11 +17,6 @@ public record CreateContentInput
     /// Dynamic attributes for the content. Supports any JSON-serializable properties.
     /// </summary>
     public JsonObject? Attributes { get; init; }
-
-    /// <summary>
-    /// SEO metadata for the content.
-    /// </summary>
-    public ContentSeo? Seo { get; init; }
 }
 
 /// <summary>
@@ -29,11 +24,6 @@ public record CreateContentInput
 /// </summary>
 public record UpdateContentInput
 {
-    /// <summary>
-    /// The locale for the content update.
-    /// </summary>
-    public string? Locale { get; init; }
-
     /// <summary>
     /// Dynamic attributes to update. Only specified properties will be updated.
     /// </summary>
@@ -81,7 +71,7 @@ public interface IContentsApi
     /// <param name="ct">Cancellation token for the operation.</param>
     /// <returns>The content item if found; throws an exception if not found.</returns>
     Task<Content> GetByIdAsync(
-        string type, string id, AtlasRequestOptions? options = null, CancellationToken ct = default);
+        string type, string id, string? resolve = null, AtlasRequestOptions? options = null, CancellationToken ct = default);
 
     /// <summary>
     /// Retrieves a singleton content item (unique content of a specific type).
@@ -113,7 +103,7 @@ public interface IContentsApi
     /// <param name="options">Optional request options including custom API key.</param>
     /// <param name="ct">Cancellation token for the operation.</param>
     /// <returns>The result containing the ID of the created content.</returns>
-    Task<CreateResult> CreateAsync(
+    Task<KeyResult<string>> CreateAsync(
         string type, CreateContentInput payload, AtlasRequestOptions? options = null, CancellationToken ct = default);
 
     /// <summary>
@@ -135,7 +125,7 @@ public interface IContentsApi
     /// <param name="options">Optional request options including custom API key.</param>
     /// <param name="ct">Cancellation token for the operation.</param>
     Task RemoveAsync(
-        string type, string id, AtlasRequestOptions? options = null, CancellationToken ct = default);
+        string type, string id, bool? locales = null, AtlasRequestOptions? options = null, CancellationToken ct = default);
 
     /// <summary>
     /// Changes the publication status of a content item.
@@ -157,7 +147,7 @@ public interface IContentsApi
     /// <param name="options">Optional request options including custom API key.</param>
     /// <param name="ct">Cancellation token for the operation.</param>
     /// <returns>The result containing the ID of the new translation.</returns>
-    Task<CreateResult> CreateTranslationAsync(
+    Task<KeyResult<string>> CreateTranslationAsync(
         string type, string id, string? locale = null, AtlasRequestOptions? options = null, CancellationToken ct = default);
 
     /// <summary>
@@ -169,7 +159,7 @@ public interface IContentsApi
     /// <param name="options">Optional request options including custom API key.</param>
     /// <param name="ct">Cancellation token for the operation.</param>
     /// <returns>The result containing the ID of the duplicated content.</returns>
-    Task<CreateResult> DuplicateAsync(
+    Task<KeyResult<string>> DuplicateAsync(
         string type, string id, bool locales = false, AtlasRequestOptions? options = null, CancellationToken ct = default);
 
     /// <summary>

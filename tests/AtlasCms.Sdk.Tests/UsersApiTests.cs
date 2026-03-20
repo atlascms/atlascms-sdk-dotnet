@@ -9,7 +9,7 @@ namespace AtlasCms.Sdk.Tests;
 
 public class UsersApiTests
 {
-    private static readonly string PagedJson = """{"data":[],"metadata":{"totalCount":0,"totalPages":0,"currentPage":1,"pageSize":10,"hasPreviousPage":false,"hasNextPage":false}}""";
+    private static readonly string PagedJson = """{"data":[],"metadata":{"count":0,"totalPages":0,"currentPage":1,"pageSize":10,"hasPreviousPage":false,"hasNextPage":false}}""";
 
     [Fact]
     public async Task List_HitsUsersEndpoint_NotMemberships()
@@ -48,13 +48,13 @@ public class UsersApiTests
 
         result.Should().NotBeNull();
         result.Data.Should().BeEmpty();
-        result.Metadata.TotalCount.Should().Be(0);
+        result.Metadata.Count.Should().Be(0);
     }
 
     [Fact]
     public async Task Count_ReturnsNumber()
     {
-        var handler = new MockHttpHandler("""{"value":"7"}""");
+        var handler = new MockHttpHandler("""{"result":7}""");
         var client = MockHttpHandler.BuildClient(handler);
 
         var count = await client.Users.CountAsync();
@@ -77,7 +77,7 @@ public class UsersApiTests
     [Fact]
     public async Task Create_PostsToRegisterAndReturnsId()
     {
-        var handler = new MockHttpHandler("""{"value":"new-user-id"}""");
+        var handler = new MockHttpHandler("""{"result":"new-user-id"}""");
         var client = MockHttpHandler.BuildClient(handler);
 
         var result = await client.Users.CreateAsync(new CreateUserInput
@@ -88,7 +88,7 @@ public class UsersApiTests
             Roles = ["editor"]
         });
 
-        result.Id.Should().Be("new-user-id");
+        result.Result.Should().Be("new-user-id");
         handler.LastRequest!.Method.Should().Be(HttpMethod.Post);
         handler.LastRequest.RequestUri!.AbsolutePath.Should().Be("/my-project/users/register");
         handler.LastRequestBody.Should().Contain("\"email\":\"jane@acme.com\"");
@@ -153,7 +153,7 @@ public class UsersApiTests
     public async Task List_DeserializesJsonObjectAttributes()
     {
         var handler = new MockHttpHandler("""
-            {"data":[{"id":"u1","isActive":true,"createdAt":"2024-01-01T00:00:00Z","modifiedAt":"2024-01-01T00:00:00Z","attributes":{"department":"engineering","level":3}}],"metadata":{"totalCount":1,"totalPages":1,"currentPage":1,"pageSize":10,"hasPreviousPage":false,"hasNextPage":false}}
+            {"data":[{"id":"u1","isActive":true,"createdAt":"2024-01-01T00:00:00Z","modifiedAt":"2024-01-01T00:00:00Z","attributes":{"department":"engineering","level":3}}],"metadata":{"count":1,"totalPages":1,"currentPage":1,"pageSize":10,"hasPreviousPage":false,"hasNextPage":false}}
             """);
         var client = MockHttpHandler.BuildClient(handler);
 

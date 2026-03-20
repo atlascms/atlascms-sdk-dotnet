@@ -7,7 +7,7 @@ namespace AtlasCms.Sdk.Tests;
 
 public class MediaApiTests
 {
-    private static readonly string PagedJson = """{"data":[],"metadata":{"totalCount":0,"totalPages":0,"currentPage":1,"pageSize":10,"hasPreviousPage":false,"hasNextPage":false}}""";
+    private static readonly string PagedJson = """{"data":[],"metadata":{"count":0,"totalPages":0,"currentPage":1,"pageSize":10,"hasPreviousPage":false,"hasNextPage":false}}""";
     private static readonly string MediaJson = """{"id":"m1","code":"photo","folder":"/","type":"image","createdAt":"2024-01-01T00:00:00Z","createdBy":"u1","modifiedAt":"2024-01-01T00:00:00Z","modifiedBy":"u1","originalFileName":"photo.jpg","name":"photo","format":"jpg","hash":"h","mimeType":"image/jpeg","size":1024,"url":"/assets/photo.jpg","provider":"local"}""";
 
     [Fact]

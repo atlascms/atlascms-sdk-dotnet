@@ -2,10 +2,10 @@ namespace AtlasCms.Sdk.Types;
 
 public record Role
 {
-    public required string Id { get; set; }
-    public required string Name { get; set; }
+    public string? Id { get; set; }
+    public string? Name { get; set; }
     public bool System { get; set; }
-    public IReadOnlyList<string> Permissions { get; set; } = [];
+    public IReadOnlyList<string>? Permissions { get; set; }
 }
 
 public record PermissionSection

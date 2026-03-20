@@ -26,3 +26,12 @@ public record LocaleStatus
     public required string Locale { get; set; }
     public required ContentStatus Status { get; set; }
 }
+
+/// <summary>
+/// Swagger `ContentLocale` used inside `ContentModel.locales`.
+/// </summary>
+public record ContentLocale
+{
+    public string? Locale { get; set; }
+    public string? Id { get; set; }
+}
