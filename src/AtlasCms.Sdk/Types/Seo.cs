@@ -1,3 +1,5 @@
+using System.Text.Json.Nodes;
+
 namespace AtlasCms.Sdk.Types;
 
 public record ContentSeoFaq
@@ -10,7 +12,7 @@ public record ContentSeoJsonld
 {
     public string? Type { get; set; }
     public IReadOnlyList<ContentSeoFaq>? Faq { get; set; }
-    public IReadOnlyDictionary<string, object>? AdditionalData { get; set; }
+    public IReadOnlyDictionary<string, JsonNode>? AdditionalData { get; set; }
 }
 
 public record ContentSeoOpenGraph

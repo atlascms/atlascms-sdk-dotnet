@@ -15,12 +15,12 @@ public record IField
     public string? Label { get; set; }
     public string? Name { get; set; }
     public string? Hint { get; set; }
-    public int? Order { get; set; }
+    public int Order { get; set; }
     public string? Type { get; set; }
     public bool? Localizable { get; set; }
-    public bool? Hidden { get; set; }
-    public bool? ReadOnly { get; set; }
-    public bool? Required { get; set; }
+    public bool Hidden { get; set; }
+    public bool ReadOnly { get; set; }
+    public bool Required { get; set; }
 }
 
 public record Component
@@ -31,9 +31,9 @@ public record Component
     public string? Description { get; set; }
     public SchemaType? Type { get; set; }
     public IReadOnlyList<IField>? Attributes { get; set; }
-    public DateTimeOffset? CreatedAt { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
     public string? CreatedBy { get; set; }
-    public DateTimeOffset? ModifiedAt { get; set; }
+    public DateTimeOffset ModifiedAt { get; set; }
     public string? ModifiedBy { get; set; }
     public string? ProjectId { get; set; }
 }
@@ -43,7 +43,7 @@ public record Fieldset
     public string? Key { get; set; }
     public string? Name { get; set; }
     public string? Description { get; set; }
-    public bool? Collapsed { get; set; }
+    public bool Collapsed { get; set; }
     public IReadOnlyList<string>? Fields { get; set; }
 }
 
@@ -95,15 +95,15 @@ public record Model
     public string? Description { get; set; }
     public SchemaType? Type { get; set; }
     public IReadOnlyList<IField>? Attributes { get; set; }
-    public DateTimeOffset? CreatedAt { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
     public string? CreatedBy { get; set; }
-    public DateTimeOffset? ModifiedAt { get; set; }
+    public DateTimeOffset ModifiedAt { get; set; }
     public string? ModifiedBy { get; set; }
-    public bool? EnableStageMode { get; set; }
-    public bool? EnableSeo { get; set; }
-    public bool? IsSingle { get; set; }
-    public bool? System { get; set; }
-    public bool? Localizable { get; set; }
+    public bool EnableStageMode { get; set; }
+    public bool EnableSeo { get; set; }
+    public bool IsSingle { get; set; }
+    public bool System { get; set; }
+    public bool Localizable { get; set; }
     public ModelProperties? Properties { get; set; }
     public IReadOnlyList<ModelFilterModel>? Filters { get; set; }
 }
@@ -121,5 +121,5 @@ public record ComponentModel
     public string? Status { get; set; }
     public ContentSeo? Seo { get; set; }
     public JsonObject? Attributes { get; set; }
-    public IReadOnlyList<LocaleStatus>? Locales { get; set; }
+    public IReadOnlyList<ContentLocale>? Locales { get; set; }
 }
