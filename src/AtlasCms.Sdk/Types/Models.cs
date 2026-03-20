@@ -21,6 +21,7 @@ public record IField
     public bool Hidden { get; set; }
     public bool ReadOnly { get; set; }
     public bool Required { get; set; }
+    public JsonObject? Settings { get; set; }
 }
 
 public record Component
@@ -108,18 +109,3 @@ public record Model
     public IReadOnlyList<ModelFilterModel>? Filters { get; set; }
 }
 
-public record ComponentModel
-{
-    public string? Id { get; set; }
-    public string? ModelKey { get; set; }
-    public string? Locale { get; set; }
-    public DateTimeOffset? CreatedAt { get; set; }
-    public string? CreatedBy { get; set; }
-    public DateTimeOffset? ModifiedAt { get; set; }
-    public string? ModifiedBy { get; set; }
-    public string? Hash { get; set; }
-    public string? Status { get; set; }
-    public ContentSeo? Seo { get; set; }
-    public JsonObject? Attributes { get; set; }
-    public IReadOnlyList<ContentLocale>? Locales { get; set; }
-}
